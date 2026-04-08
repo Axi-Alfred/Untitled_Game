@@ -1,0 +1,78 @@
+This repository contains our Unreal Engine group project. It includes gameplay systems, levels, assets, audio, and all core development files.
+
+Working Rules
+
+Always pull the latest version before you start working. Never work directly in the main branch. Each team member should work in their own branch and keep changes isolated until they are ready.
+
+Commit often, but make sure your commits are clear and meaningful. Avoid vague messages like “fix” or “update”. Always check what files you are committing before pushing.
+
+Do not edit the same Unreal asset (such as levels or Blueprints) as someone else at the same time without communicating. Unreal files like .uasset and .umap are binary and difficult to merge, so coordination is important.
+
+Do not commit generated or unnecessary files. Avoid force pushing unless the team has agreed. If something breaks or looks wrong, stop and ask instead of guessing.
+
+The main branch should always remain stable and playable.
+
+Branching
+
+The main branch is used only for stable versions of the project.
+
+All development happens in separate feature branches. Each branch should represent a specific task or system.
+
+Use clear naming such as:
+feature/alfred-combat
+feature/robin-ai
+feature/ui-system
+
+Setup
+
+Install Git, Git LFS, and the correct version of Unreal Engine.
+
+Clone the repository to your computer, then run Git LFS once to enable support for large Unreal files.
+
+Workflow
+
+Before starting work, switch to the main branch and pull the latest changes.
+
+Create or switch to your own branch and do your work there.
+
+After making changes, check what files have been modified, then commit with a clear message describing what you did.
+
+Push your branch to GitHub regularly.
+
+When your work is ready, create a pull request and merge it into main only when the project is stable.
+
+Updating Your Work
+
+If the main branch has been updated while you are working, pull the latest version of main and merge it into your branch. Solve any conflicts before continuing.
+
+Merge Conflicts
+
+If you encounter a conflict, do not rush. Check which files are affected and be especially careful with Unreal assets. If unsure, coordinate with the team before resolving.
+
+Important Notes
+
+Unreal projects contain many generated folders that should not be committed, such as Binaries, Intermediate, Saved, and DerivedDataCache.
+
+Large Unreal files such as .uasset and .umap are handled through Git LFS.
+
+Because these files cannot be merged easily, team communication is essential when working on shared assets.
+
+Team
+
+Alfred Pereira
+[Name]
+[Name]
+[Name]
+
+Engine Version
+
+Unreal Engine: [VERSION]
+
+Summary
+
+Pull before you start.
+Work in your own branch.
+Commit clearly.
+Push regularly.
+Communicate with the team.
+Keep main stable.
