@@ -8,6 +8,9 @@
 #include "DamageSystemComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageTaken, const FDamageInfo&, DamageInfo);
+// BLOCKING //
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageAvoided, const FDamageInfo&, DamageInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealReceived, float, HealAmount, AActor*, Healer);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -63,8 +66,15 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
 	FOnDamageTaken OnDamageTaken;
 	
+	// BLOCKING //
+	//UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
+	//FOnDamageAvoided OnDamageAvoided;
+	
 	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
 	FOnDeath OnDeath;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
+	FOnHealReceived OnHealReceived;
 	
 	
 };

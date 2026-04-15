@@ -47,6 +47,7 @@ void UDamageSystemComponent::HandleIncomingHeal(float HealAmount, AActor* Healer
 	if (IsDead){ return; }
 	
 	CurrentHealth = FMath::Clamp(CurrentHealth + HealAmount, 0.f, MaxHealth);
+	OnHealReceived.Broadcast(HealAmount, Healer);
 }
 
 void UDamageSystemComponent::SetStartingHealth(float StartingHealth)
@@ -55,3 +56,4 @@ void UDamageSystemComponent::SetStartingHealth(float StartingHealth)
 	CurrentHealth = StartingHealth;
 }
 
+	
