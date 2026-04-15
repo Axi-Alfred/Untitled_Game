@@ -55,10 +55,16 @@ public:
 	// GETTER FUNCTIONS //
 	// Set IsBlocking...
 	
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void SetStartingHealth(float StartingHealth);
+	
+	
 	// DELEGATES //
 	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
 	FOnDamageTaken OnDamageTaken;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
 	FOnDeath OnDeath;
+	
+	
 };
