@@ -31,6 +31,13 @@ bool UDamageSystemComponent::HandleIncomingDamage(const FDamageInfo& DamageInfo)
 	//if (IsBlocking && DamageInfo.CanBeLocked) { return false; }
 	
 	CurrentHealth = FMath::Clamp(CurrentHealth - DamageInfo.DamageAmount, 0.f, MaxHealth);
+	OnDamageTaken.Broadcast(DamageInfo);
+	
+	if (CurrentHealth <= 0.0f)
+	{
+		IsDead = true;
+		OnDeath.Broadcast();
+	}
 	
 	return true;
 }
