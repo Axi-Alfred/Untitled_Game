@@ -8,7 +8,7 @@ public class Untitled_GameEditorTarget : TargetRules
 	public Untitled_GameEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
+		DefaultBuildSettings = BuildSettingsVersion.V6;
 
 		ExtraModuleNames.AddRange( new string[] { "Untitled_Game" } );
 	}
