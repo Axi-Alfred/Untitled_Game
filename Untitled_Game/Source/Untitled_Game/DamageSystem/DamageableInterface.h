@@ -33,6 +33,9 @@ public:
 	bool GetIsDead();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Damageable Interface")
+	bool GetIsAttacking();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Damageable Interface")
 	void Heal(float HealAmount, AActor* Healer);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Damageable Interface")

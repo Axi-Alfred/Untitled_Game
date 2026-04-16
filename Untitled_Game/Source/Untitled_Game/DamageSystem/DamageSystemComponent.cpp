@@ -56,4 +56,9 @@ void UDamageSystemComponent::SetStartingHealth(float StartingHealth)
 	CurrentHealth = StartingHealth;
 }
 
+void UDamageSystemComponent::SetIsAttacking(bool ActorIsAttacking)
+{
+	IsAttacking =  ActorIsAttacking;
+}
+
 	
