@@ -61,7 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
 	bool GetIsAttacking() const { return IsAttacking; };
 	
-	// GETTER FUNCTIONS //
+	// SETTER FUNCTIONS //
 	// Set IsBlocking...
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")

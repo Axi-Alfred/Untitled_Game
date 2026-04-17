@@ -58,7 +58,6 @@ void UDamageSystemComponent::SetStartingHealth(float StartingHealth)
 
 void UDamageSystemComponent::SetIsAttacking(bool ActorIsAttacking)
 {
-	IsAttacking =  ActorIsAttacking;
+	IsAttacking = ActorIsAttacking;
 }
 
-	
