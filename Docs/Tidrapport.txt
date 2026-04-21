@@ -1,0 +1,12 @@
+Datum		Tid start	Tid slut	Rast	Vad arbetade jag på idag?		Timme per dag	Totalt per vecka	Projektets totala timmar
+
+
+april 13 mån	08:00		16:00		01:00	Whitebox Castle Town			7:00		7:00
+april 14 tis	08:00		16:00		01:00	Whitebox Castle Town			7:00		14:00
+april 15 ons	14:00		21:00		02:00	Pitch och Github Merge			5:00		19:00
+april 16 tors	10:00		13:00			Presentation och feedback review	3:00		22:00
+april 17 fre	10:00		15:00		01:00	Individuell arbete			4:00		26:00
+april 18 lör	10:00		15:00		01:00	Individuell arbete			4:00		30:00
+april 19 sön	-----		-----		-----	----------------			0:00		30:00
+														 			totalt : 68:15 Timmar
+ 
