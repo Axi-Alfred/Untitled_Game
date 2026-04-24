@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "VibeUE": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://127.0.0.1:8088/mcp",
+        "--transport",
+        "http-only",
+        "--allow-http"
+      ]
+    }
+  }
+}
