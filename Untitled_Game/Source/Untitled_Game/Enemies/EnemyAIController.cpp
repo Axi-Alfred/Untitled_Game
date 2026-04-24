@@ -76,6 +76,8 @@ void AEnemyAIController::UpdateTarget()
 		if (CurrentBBTarget != NewTarget)
 		{
 			BB->SetValueAsObject("TargetActor", NewTarget);
+			
+			StopMovement();
 		}
 	}
 }
