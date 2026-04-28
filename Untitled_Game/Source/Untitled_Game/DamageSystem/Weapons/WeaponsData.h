@@ -27,7 +27,4 @@ struct UNTITLED_GAME_API FWeaponsData: public FTableRowBase
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<AWeaponBase> WeaponClassRef;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSoftClassPtr<AActor> WeaponClass;
 };
