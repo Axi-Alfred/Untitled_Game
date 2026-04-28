@@ -32,6 +32,9 @@ private:
 	UPROPERTY()
 	bool IsDead = false;
 	
+	UPROPERTY()
+	bool IsAttacking = false;
+	
 	//bool IsBlocking?
 
 protected:
@@ -55,11 +58,17 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Health")
 	bool GetIsDead() const { return IsDead; };
 	
-	// GETTER FUNCTIONS //
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
+	bool GetIsAttacking() const { return IsAttacking; };
+	
+	// SETTER FUNCTIONS //
 	// Set IsBlocking...
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void SetStartingHealth(float StartingHealth);
+	
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void SetIsAttacking(bool ActorIsAttacking);
 	
 	
 	// DELEGATES //
@@ -75,6 +84,4 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Damage Delegates")
 	FOnHealReceived OnHealReceived;
-	
-	
 };
