@@ -50,16 +50,16 @@ public:
 	
 	// GETTER FUNCTIONS //
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Health")
-	float GetCurrentHealth() { return CurrentHealth; };
+	float GetCurrentHealth() const { return CurrentHealth; }
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Health")
-	float GetMaxHealth() const { return MaxHealth; };
+	float GetMaxHealth() const { return MaxHealth; }
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Health")
-	bool GetIsDead() const { return IsDead; };
+	bool GetIsDead() const { return IsDead; }
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
-	bool GetIsAttacking() const { return IsAttacking; };
+	bool GetIsAttacking() const { return IsAttacking; }
 	
 	// SETTER FUNCTIONS //
 	// Set IsBlocking...
