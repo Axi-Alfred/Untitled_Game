@@ -18,10 +18,9 @@ AActor* AObjectiveManager::GetCurrentObjective() const
 	return nullptr;
 }
 
-void AObjectiveManager::AdvanceObjective()
+void AObjectiveManager::SetObjectiveIndex(int Index)
 {
-	// Här kommer koden där vilket objective som skall attackeras ligga. (for now gå bara till nästa objective)
-	CurrentIndex++;
+	CurrentIndex = Index;
 	
 	if (Objectives.IsValidIndex(CurrentIndex))
 	{

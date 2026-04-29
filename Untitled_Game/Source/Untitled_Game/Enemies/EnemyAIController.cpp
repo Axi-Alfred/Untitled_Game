@@ -59,7 +59,6 @@ void AEnemyAIController::UpdateTarget()
 	if (!ObjectiveManager) return;
 	
 	AActor* CurrentObjective = ObjectiveManager->GetCurrentObjective();
-	UE_LOG(LogTemp, Warning, TEXT("CurrentObjective: %s"), *GetNameSafe(CurrentObjective));
 	if (!CurrentObjective) return;
 	
 	float Distance = FVector::Dist(

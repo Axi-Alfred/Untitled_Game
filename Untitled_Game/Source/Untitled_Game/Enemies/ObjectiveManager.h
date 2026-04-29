@@ -22,5 +22,5 @@ public:
 	
 	AActor* GetCurrentObjective() const;
 	
-	void AdvanceObjective();
+	void SetObjectiveIndex(int Index);
 };
