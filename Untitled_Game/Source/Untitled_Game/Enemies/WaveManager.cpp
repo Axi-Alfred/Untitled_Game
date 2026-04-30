@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "WaveManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,12 +6,12 @@ void AWaveManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	TArray<AActor*> FoundManagers;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AObjectiveManager::StaticClass(), FoundManagers);
+	TArray<AActor*> FoundObjectiveManagers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AObjectiveManager::StaticClass(), FoundObjectiveManagers);
 	
-	if (FoundManagers.Num() > 0)
+	if (FoundObjectiveManagers.Num() > 0)
 	{
-		ObjectiveManager = Cast<AObjectiveManager>(FoundManagers[0]);
+		ObjectiveManager = Cast<AObjectiveManager>(FoundObjectiveManagers[0]);
 	}
 	
 	StartWave();
@@ -21,7 +19,7 @@ void AWaveManager::BeginPlay()
 
 void AWaveManager::StartWave()
 {
-	// Detta kommer behöva ändras tror jag (just nu blir logiken att vi börjar slåss i "zon B/zon 2"
+	// Synka det nuvarande objectivet med rätt zon som fiender spawnas i.
 	if (ObjectiveManager)
 	{
 		ObjectiveManager->SetObjectiveIndex(CurrentZone);	
@@ -34,25 +32,26 @@ void AWaveManager::SpawnPortals()
 {
 	ActivePortals = 0;
 	
-	TArray<AActor*> CurrentZonePoints;
+	// Välj spawnpoints baserat på vilken zon som ska attackeras.
+	const TArray<AActor*>* CurrentZonePoints = nullptr;
 	
 	switch (CurrentZone)
 	{
-	case 0: CurrentZonePoints = ZoneAPoints; break;
-	case 1: CurrentZonePoints = ZoneBPoints; break;
-	case 2: CurrentZonePoints = ZoneCPoints; break;
-	case 3: CurrentZonePoints = ZoneDPoints; break;
-	default: break;
+	case 0: CurrentZonePoints = &ZoneAPoints; break;
+	case 1: CurrentZonePoints = &ZoneBPoints; break;
+	case 2: CurrentZonePoints = &ZoneCPoints; break;
+	case 3: CurrentZonePoints = &ZoneDPoints; break;
+	default: return;
 	}
 	
-	//kopierar spawnpoint för att sedan kunna ta bort dem spawnpoints som används
-	TArray<AActor*> AvailableSpawnPoints = CurrentZonePoints;
+	//kopierar spawnpoints för att inte kunna återanvända dem som redan används
+	TArray<AActor*> AvailableSpawnPoints = *CurrentZonePoints;
 	
-	for (int i = 0; i < PortalsPerWave; i++)
+	for (int32 i = 0; i < PortalsPerWave; i++)
 	{
-		if (AvailableSpawnPoints.Num() == 0) break;
+		if (AvailableSpawnPoints.Num() <= 0) break;
 		
-		int Index = FMath::RandRange(0, AvailableSpawnPoints.Num() - 1);
+		int32 Index = FMath::RandRange(0, AvailableSpawnPoints.Num() - 1);
 		AActor* SpawnPoint = AvailableSpawnPoints[Index];
 		
 		//ta bort använda spawnpoints (förhindrar att portaler kan spawnas på samma ställe)
@@ -76,24 +75,25 @@ void AWaveManager::OnPortalDestroyed()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Destroyed Portal, remaining active portals: %d"), ActivePortals);
 	
-	if (ActivePortals == 0)
+	if (ActivePortals <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Wave cleared!"));
 		ShowPortalsCleared();
 		
 		CurrentZone++;
+		
 		if (CurrentZone > 3)
 		{
 			CurrentZone = 0;
 		}
 		
 		// väntetid mellan waves
-		FTimerHandle TimerHandle;
+		FTimerHandle WaveTimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle,
+			WaveTimerHandle,
 			this,
 			&AWaveManager::StartWave,
-			30.f,
+			CooldownPhaseTime,
 			false);
 	}
 }

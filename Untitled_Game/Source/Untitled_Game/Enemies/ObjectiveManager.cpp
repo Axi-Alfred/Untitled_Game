@@ -1,12 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "ObjectiveManager.h"
 
 AObjectiveManager::AObjectiveManager()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 AActor* AObjectiveManager::GetCurrentObjective() const
@@ -18,12 +15,15 @@ AActor* AObjectiveManager::GetCurrentObjective() const
 	return nullptr;
 }
 
-void AObjectiveManager::SetObjectiveIndex(int Index)
+void AObjectiveManager::SetObjectiveIndex(int32 Index)
 {
+	if (!Objectives.IsValidIndex(Index))
+	{
+		UE_LOG(LogTemp, Error, TEXT("invalid objective index: %d"), Index);
+		return;
+	}
+	
 	CurrentIndex = Index;
 	
-	if (Objectives.IsValidIndex(CurrentIndex))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
-	}
+	UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
 }
