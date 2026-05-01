@@ -19,6 +19,8 @@ void AWaveManager::BeginPlay()
 
 void AWaveManager::StartWave()
 {
+	EnemiesAlive = 0;
+	
 	// Synka det nuvarande objectivet med rätt zon som fiender spawnas i.
 	if (ObjectiveManager)
 	{
@@ -59,12 +61,17 @@ void AWaveManager::SpawnPortals()
 		
 		if (SpawnPoint && PortalClass)
 		{
-			GetWorld()->SpawnActor<AActor>(
+			AActor* Portal = GetWorld()->SpawnActor<AActor>(
 				PortalClass,
 				SpawnPoint->GetActorLocation(),
 				FRotator::ZeroRotator);
 			
-			ActivePortals++;
+			if (Portal)
+			{
+				ActivePortals++;
+				
+				EnemiesAlive += EnemiesPerPortal;
+			}
 		}
 	}
 }
@@ -73,27 +80,37 @@ void AWaveManager::OnPortalDestroyed()
 {
 	ActivePortals--;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Destroyed Portal, remaining active portals: %d"), ActivePortals);
+	if (ActivePortals == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("All portals finished spawning"));
+	}
+}
+
+void AWaveManager::EnemyDied()
+{
+	EnemiesAlive --;
 	
-	if (ActivePortals <= 0)
+	UE_LOG(LogTemp, Warning, TEXT("Enemy died, Enemies left: %d"), EnemiesAlive);
+	
+	if (EnemiesAlive <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Wave cleared!"));
-		ShowPortalsCleared();
 		
+		ShowEnemiesCleared();
+		
+		//Loopar nuvarande zon mellan de 4 som existerar för nu
 		CurrentZone++;
-		
 		if (CurrentZone > 3)
 		{
 			CurrentZone = 0;
 		}
 		
-		// väntetid mellan waves
-		FTimerHandle WaveTimerHandle;
+		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(
-			WaveTimerHandle,
+			TimerHandle,
 			this,
 			&AWaveManager::StartWave,
-			CooldownPhaseTime,
+			TimeBetweenWaves,
 			false);
 	}
 }

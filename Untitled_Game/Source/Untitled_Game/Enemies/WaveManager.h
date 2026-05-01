@@ -38,6 +38,18 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category="Zones")
 	TArray<AActor*> ZoneDPoints;
+	
+	// Variabel för att hålla koll på hur många fiender kvar innan wave avlsutas
+	UPROPERTY(BlueprintReadOnly)
+	int32 EnemiesAlive = 0;
+	
+	// Hur många fiender ska portaler spawna
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wave")
+	int32 EnemiesPerPortal = 4;
+	
+	//Väntetid mellan waves
+	UPROPERTY(EditAnywhere, Category="Wave")
+	float TimeBetweenWaves = 30.f;
 
 	// Kallas av portaler när dem förstörs
 	UFUNCTION(BlueprintCallable, Category="Wave")
@@ -45,7 +57,10 @@ public:
 	
 	// Event för UI feedback (PLACEHOLDER JUST NU)
 	UFUNCTION(BlueprintImplementableEvent, Category="Wave")
-	void ShowPortalsCleared();
+	void ShowEnemiesCleared();
+	
+	UFUNCTION(BlueprintCallable, Category="Wave")
+	void EnemyDied();
 	
 private:
 	
