@@ -19,7 +19,10 @@ public:
 	
 	// Ability system component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	class UAbilitySystemComponent* AbilitySystemComponent;
+	UAbilitySystemComponent* AbilitySystemComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	class UBasicAttributeSet* BasicAttributeSet;
 
 protected:
 	//If player ::Mixed, If enemy ::Minimal

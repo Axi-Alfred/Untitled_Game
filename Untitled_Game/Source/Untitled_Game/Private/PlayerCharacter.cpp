@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Untitled_Game/DamageSystem/GameplayAbilitySystem/AttributeSets/BasicAttributeSet.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -15,6 +16,9 @@ APlayerCharacter::APlayerCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
+	
+	//Add the basic attributes set
+	BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
 	
 	// Configure character Movement...
 }
