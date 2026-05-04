@@ -22,10 +22,6 @@ public:
 	UPROPERTY(EditAnywhere, Category="Wave")
 	int32 PortalsPerWave = 3;
 	
-	// väntetid mellan waves
-	UPROPERTY(EditAnywhere, Category="Wave")
-	float CooldownPhaseTime = 30.f;
-	
 	// Spawnpoints för varje zon
 	UPROPERTY(EditAnywhere, Category="Zones")
 	TArray<AActor*> ZoneAPoints;
@@ -43,6 +39,12 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	int32 EnemiesAlive = 0;
 	
+	UPROPERTY(BlueprintReadOnly)
+	int32 CurrentWave = 1;
+	
+	UPROPERTY(BlueprintReadOnly)
+	float TimeUntilNextWave = 0.f;
+	
 	// Hur många fiender ska portaler spawna
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wave")
 	int32 EnemiesPerPortal = 4;
@@ -50,22 +52,29 @@ public:
 	//Väntetid mellan waves
 	UPROPERTY(EditAnywhere, Category="Wave")
 	float TimeBetweenWaves = 30.f;
-
-	// Kallas av portaler när dem förstörs
-	UFUNCTION(BlueprintCallable, Category="Wave")
-	void OnPortalDestroyed();
+	
+	UFUNCTION(BlueprintCallable)
+	void AddAliveEnemy(AActor* Enemy);
+	
+	UFUNCTION(BlueprintCallable)
+	void EnemyDied(AActor* DestroyedActor);
 	
 	// Event för UI feedback (PLACEHOLDER JUST NU)
-	UFUNCTION(BlueprintImplementableEvent, Category="Wave")
+	UFUNCTION(BlueprintImplementableEvent)
 	void ShowEnemiesCleared();
 	
-	UFUNCTION(BlueprintCallable, Category="Wave")
-	void EnemyDied();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnWaveStarted(int32 WaveNumber);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnCountdownUpdated(int32 TimeLeft);
+	
+	FTimerHandle WaveTimerHandle;
+	FTimerHandle CountdownTimerHandle;
+	
+	void UpdateCountdown();
 	
 private:
-	
-	// Antal portaler som lever
-	int32 ActivePortals = 0;
 	
 	// index för vilken zon som är under attack
 	// 0 = A, 1 = B, 2 = C, 3 = D

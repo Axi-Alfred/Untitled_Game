@@ -21,6 +21,10 @@ void AWaveManager::StartWave()
 {
 	EnemiesAlive = 0;
 	
+	OnWaveStarted(CurrentWave);
+	
+	UE_LOG(LogTemp, Warning, TEXT("Wave started! Current wave: %d"), CurrentWave);
+	
 	// Synka det nuvarande objectivet med rätt zon som fiender spawnas i.
 	if (ObjectiveManager)
 	{
@@ -32,8 +36,6 @@ void AWaveManager::StartWave()
 
 void AWaveManager::SpawnPortals()
 {
-	ActivePortals = 0;
-	
 	// Välj spawnpoints baserat på vilken zon som ska attackeras.
 	const TArray<AActor*>* CurrentZonePoints = nullptr;
 	
@@ -65,30 +67,24 @@ void AWaveManager::SpawnPortals()
 				PortalClass,
 				SpawnPoint->GetActorLocation(),
 				FRotator::ZeroRotator);
-			
-			if (Portal)
-			{
-				ActivePortals++;
-				
-				EnemiesAlive += EnemiesPerPortal;
-			}
 		}
 	}
 }
 
-void AWaveManager::OnPortalDestroyed()
+void AWaveManager::AddAliveEnemy(AActor* Enemy)
 {
-	ActivePortals--;
+	if (!Enemy) return;
 	
-	if (ActivePortals == 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("All portals finished spawning"));
-	}
+	//Höj EnemiesAlive variabel
+	EnemiesAlive++;
+	
+	//När enemy dör -> anropa EnemyDied()
+	Enemy->OnDestroyed.AddDynamic(this, &AWaveManager::EnemyDied);
 }
 
-void AWaveManager::EnemyDied()
+void AWaveManager::EnemyDied(AActor* DestroyedActor)
 {
-	EnemiesAlive --;
+	EnemiesAlive--;
 	
 	UE_LOG(LogTemp, Warning, TEXT("Enemy died, Enemies left: %d"), EnemiesAlive);
 	
@@ -98,6 +94,8 @@ void AWaveManager::EnemyDied()
 		
 		ShowEnemiesCleared();
 		
+		CurrentWave++;
+		
 		//Loopar nuvarande zon mellan de 4 som existerar för nu
 		CurrentZone++;
 		if (CurrentZone > 3)
@@ -105,12 +103,34 @@ void AWaveManager::EnemyDied()
 			CurrentZone = 0;
 		}
 		
-		FTimerHandle TimerHandle;
+		TimeUntilNextWave = TimeBetweenWaves;
+		
+		//Countdown mellan waves
 		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle,
+			CountdownTimerHandle,
+			this,
+			&AWaveManager::UpdateCountdown,
+			1.0f,
+			true);
+		
+		//Starta nästa wave om "TimeBetweenWaves" sekunder
+		GetWorld()->GetTimerManager().SetTimer(
+			WaveTimerHandle,
 			this,
 			&AWaveManager::StartWave,
 			TimeBetweenWaves,
 			false);
+	}
+}
+
+void AWaveManager::UpdateCountdown()
+{
+	TimeUntilNextWave--;
+	
+	OnCountdownUpdated(FMath::CeilToInt(TimeUntilNextWave));
+	
+	if (TimeUntilNextWave <= 0)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(CountdownTimerHandle);
 	}
 }
