@@ -1,9 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
-#include "ObjectiveManager.h"
 #include "CoreMinimal.h"
+#include "ObjectiveManager.h"
 #include "GameFramework/Actor.h"
 #include "WaveManager.generated.h"
 
@@ -15,15 +14,19 @@ class UNTITLED_GAME_API AWaveManager : public AActor
 public:	
 	virtual void BeginPlay() override;
 	
-	// Portal BP
-	UPROPERTY(EditAnywhere, Category="Portal")
+	// Portal-klass som spawnas under waves
+	UPROPERTY(EditAnywhere, Category="Wave")
 	TSubclassOf<AActor> PortalClass;
 	
 	// Hur många portaler ska komma per wave
-	UPROPERTY(EditAnywhere, Category="Portal")
-	int PortalsPerWave = 3;
+	UPROPERTY(EditAnywhere, Category="Wave")
+	int32 PortalsPerWave = 3;
 	
-	// Portaler för varje zon
+	// väntetid mellan waves
+	UPROPERTY(EditAnywhere, Category="Wave")
+	float CooldownPhaseTime = 30.f;
+	
+	// Spawnpoints för varje zon
 	UPROPERTY(EditAnywhere, Category="Zones")
 	TArray<AActor*> ZoneAPoints;
 	
@@ -36,20 +39,42 @@ public:
 	UPROPERTY(EditAnywhere, Category="Zones")
 	TArray<AActor*> ZoneDPoints;
 	
-private:
-	int ActivePortals = 0;
-	int CurrentZone = 0;
+	// Variabel för att hålla koll på hur många fiender kvar innan wave avlsutas
+	UPROPERTY(BlueprintReadOnly)
+	int32 EnemiesAlive = 0;
 	
+	// Hur många fiender ska portaler spawna
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wave")
+	int32 EnemiesPerPortal = 4;
+	
+	//Väntetid mellan waves
+	UPROPERTY(EditAnywhere, Category="Wave")
+	float TimeBetweenWaves = 30.f;
+
+	// Kallas av portaler när dem förstörs
+	UFUNCTION(BlueprintCallable, Category="Wave")
+	void OnPortalDestroyed();
+	
+	// Event för UI feedback (PLACEHOLDER JUST NU)
+	UFUNCTION(BlueprintImplementableEvent, Category="Wave")
+	void ShowEnemiesCleared();
+	
+	UFUNCTION(BlueprintCallable, Category="Wave")
+	void EnemyDied();
+	
+private:
+	
+	// Antal portaler som lever
+	int32 ActivePortals = 0;
+	
+	// index för vilken zon som är under attack
+	// 0 = A, 1 = B, 2 = C, 3 = D
+	int32 CurrentZone = 0;
+	
+	// Referens till ObjectiveManager för att kunna byta objective vid nya waves.
+	UPROPERTY()
 	AObjectiveManager* ObjectiveManager;
 	
 	void StartWave();
 	void SpawnPortals();
-
-public:	
-	UFUNCTION(BlueprintCallable, Category="Portal")
-	void OnPortalDestroyed();
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void ShowPortalsCleared();
-
 };

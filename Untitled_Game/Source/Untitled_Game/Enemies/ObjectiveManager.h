@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -14,13 +13,18 @@ class UNTITLED_GAME_API AObjectiveManager : public AActor
 public:	
 	AObjectiveManager();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	// Lista på alla objectives i leveln
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Objectives")
 	TArray<AActor*> Objectives;
 	
-	UPROPERTY(BlueprintReadOnly)
-	int CurrentIndex = 0;
+	// Nuvarande objective index, 
+	// 0 = Zon A, 1 = Zon B, 2 = Zon C, 3 = Zon D.
+	UPROPERTY(BlueprintReadOnly, Category="Objectives")
+	int32 CurrentIndex = 0;
 	
+	// Returnerar nuvarande objective actor
 	AActor* GetCurrentObjective() const;
 	
-	void SetObjectiveIndex(int Index);
+	// Sätter vilket objective som är "under attack"
+	void SetObjectiveIndex(int32 Index);
 };
