@@ -1,12 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "ObjectiveManager.h"
+#include "Kismet/GameplayStatics.h"
 
 AObjectiveManager::AObjectiveManager()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 AActor* AObjectiveManager::GetCurrentObjective() const
@@ -18,13 +16,24 @@ AActor* AObjectiveManager::GetCurrentObjective() const
 	return nullptr;
 }
 
-void AObjectiveManager::AdvanceObjective()
+void AObjectiveManager::SetObjectiveIndex(int32 Index)
 {
-	// Här kommer koden där vilket objective som skall attackeras ligga. (for now gå bara till nästa objective)
-	CurrentIndex++;
-	
-	if (Objectives.IsValidIndex(CurrentIndex))
+	if (!Objectives.IsValidIndex(Index))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
+		UE_LOG(LogTemp, Error, TEXT("invalid objective index: %d"), Index);
+		return;
 	}
+	
+	CurrentIndex = Index;
+	
+	UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
+}
+
+void AObjectiveManager::ObjectiveDestroyed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Objective destroyed!"));
+	
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	
+	ShowGameOver();
 }
