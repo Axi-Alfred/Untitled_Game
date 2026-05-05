@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Untitled_Game/DamageSystem/GameplayAbilitySystem/CustomAbilitySystemComponent.h"
 #include "Untitled_Game/DamageSystem/GameplayAbilitySystem/AttributeSets/BasicAttributeSet.h"
 
 // Sets default values
@@ -13,7 +14,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	// Add the ability system component
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = CreateDefaultSubobject<UCustomAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
 	
