@@ -46,8 +46,12 @@ public:
 	float TimeUntilNextWave = 0.f;
 	
 	// Hur många fiender ska portaler spawna
+	UPROPERTY(BlueprintReadOnly)
+	int32 EnemiesPerPortal;
+	
+	//Hur många fiender ska portaler spawna från start
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wave")
-	int32 EnemiesPerPortal = 4;
+	int32 BaseEnemiesPerPortal = 1;
 	
 	//Väntetid mellan waves
 	UPROPERTY(EditAnywhere, Category="Wave")

@@ -31,6 +31,9 @@ void AWaveManager::StartWave()
 		ObjectiveManager->SetObjectiveIndex(CurrentZone);	
 	}
 	
+	//Öka antal fiender per wave
+	EnemiesPerPortal = BaseEnemiesPerPortal + CurrentWave - 1;
+	
 	SpawnPortals();
 }
 
