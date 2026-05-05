@@ -27,4 +27,10 @@ public:
 	
 	// Sätter vilket objective som är "under attack"
 	void SetObjectiveIndex(int32 Index);
+	
+	UFUNCTION(BlueprintCallable)
+	void ObjectiveDestroyed();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowGameOver();
 };

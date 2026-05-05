@@ -1,5 +1,6 @@
 
 #include "ObjectiveManager.h"
+#include "Kismet/GameplayStatics.h"
 
 AObjectiveManager::AObjectiveManager()
 {
@@ -26,4 +27,13 @@ void AObjectiveManager::SetObjectiveIndex(int32 Index)
 	CurrentIndex = Index;
 	
 	UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
+}
+
+void AObjectiveManager::ObjectiveDestroyed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Objective destroyed!"));
+	
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	
+	ShowGameOver();
 }
