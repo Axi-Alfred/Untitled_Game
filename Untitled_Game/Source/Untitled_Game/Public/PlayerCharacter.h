@@ -54,4 +54,5 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystem")
 	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle> AbilityHandlesToRemove);
+
 };
