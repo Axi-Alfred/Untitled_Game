@@ -2,14 +2,12 @@
 
 #pragma once
 
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "PlayerCharacter.generated.h"
 
-class AShopActor;
 UCLASS()
 class UNTITLED_GAME_API APlayerCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -31,6 +29,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem")
 	EGameplayEffectReplicationMode AscReplicationMode = EGameplayEffectReplicationMode::Mixed;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem")
+	TArray<TSubclassOf<UGameplayAbility>> StartingAbilities;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,6 +39,11 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	
 	virtual void OnRep_PlayerState() override;
+	
+	virtual void OnDeadTagChanged(const FGameplayTag CallBackTag, int32 NewCount);
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Damage")
+	void HandleDeath();
 
 public:	
 	// Called every frame
@@ -48,6 +54,10 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shop")
-	AShopActor* CurrentShop = nullptr;
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystem")
+	TArray<FGameplayAbilitySpecHandle> GrantAbilities(TArray<TSubclassOf<UGameplayAbility>> AbilitiesToGrant);
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystem")
+	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle> AbilityHandlesToRemove);
+
 };

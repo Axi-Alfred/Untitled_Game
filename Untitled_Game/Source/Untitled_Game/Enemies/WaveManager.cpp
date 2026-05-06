@@ -95,6 +95,7 @@ void AWaveManager::EnemyDied(AActor* DestroyedActor)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Wave cleared!"));
 		
+		OnWaveEnded();
 		ShowEnemiesCleared();
 		
 		CurrentWave++;
