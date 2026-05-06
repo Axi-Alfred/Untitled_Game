@@ -27,7 +27,7 @@ public:
 	
 private:
 	UPROPERTY()
-	float CurrentHealth = MaxHealth;
+	float CurrentHealth = 0.f;
 	
 	UPROPERTY()
 	bool IsDead = false;
@@ -57,6 +57,13 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Health")
 	bool GetIsDead() const { return IsDead; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void AddMaxHealth(float Amount, bool bAlsoHeal);
+
+	UFUNCTION(BlueprintCallable, Category="Health")
+	void SetMaxHealth(float NewMaxHealth, bool bClampCurrentHealth = true);
+	
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
 	bool GetIsAttacking() const { return IsAttacking; }

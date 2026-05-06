@@ -74,5 +74,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetSWeaponInfo(EWeaponNames WeaponNames, EWeaponTypes WeaponTypes);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Weapon")
+	float GetFinalDamageAmount(AActor* WeaponOwner) const;
 };
 
