@@ -71,6 +71,9 @@ public:
 	void OnWaveStarted(int32 WaveNumber);
 	
 	UFUNCTION(BlueprintImplementableEvent)
+	void OnWaveEnded();
+	
+	UFUNCTION(BlueprintImplementableEvent)
 	void OnCountdownUpdated(int32 TimeLeft);
 	
 	FTimerHandle WaveTimerHandle;
