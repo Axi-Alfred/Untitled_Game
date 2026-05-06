@@ -1,5 +1,6 @@
 #include "ShopActor.h"
 #include "Shop.h"
+#include "PlayerStats.h"
 #include "Components/BoxComponent.h"
 
 AShopActor::AShopActor()
@@ -13,10 +14,8 @@ AShopActor::AShopActor()
 
 	InteractionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	InteractionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-	
 	InteractionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	
-	
+	InteractionBox->SetGenerateOverlapEvents(true);
 	
 }
 
@@ -60,7 +59,15 @@ void AShopActor::OnOverlapBegin(
 	const FHitResult& SweepResult
 )
 {
-	PlayerInRange = OtherActor;
+	if (!OtherActor)
+	{
+		return;
+	}
+
+	if (OtherActor->FindComponentByClass<UPlayerStats>())
+	{
+		PlayerInRange = OtherActor;
+	}
 }
 
 void AShopActor::OnOverlapEnd(

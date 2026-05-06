@@ -29,6 +29,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Shop")
 	void PrepareShopForPlayer(AActor* Player);
+	
+	UPROPERTY(BlueprintReadWrite, Category="Shop")
+	AShopActor* CurrentShop = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
