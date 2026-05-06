@@ -21,7 +21,10 @@ void UDamageSystemComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	if (CurrentHealth <= 0.f)
+	{
+		CurrentHealth = MaxHealth;
+	}
 }
 
 bool UDamageSystemComponent::HandleIncomingDamage(const FDamageInfo& DamageInfo)
@@ -59,5 +62,29 @@ void UDamageSystemComponent::SetStartingHealth(float StartingHealth)
 void UDamageSystemComponent::SetIsAttacking(bool ActorIsAttacking)
 {
 	IsAttacking = ActorIsAttacking;
+}
+
+void UDamageSystemComponent::AddMaxHealth(float Amount, bool bAlsoHeal)
+{
+	MaxHealth = FMath::Max(1.f, MaxHealth + Amount);
+
+	if (bAlsoHeal)
+	{
+		CurrentHealth = FMath::Clamp(CurrentHealth + Amount, 0.f, MaxHealth);
+	}
+	else
+	{
+		CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
+	}
+}
+
+void UDamageSystemComponent::SetMaxHealth(float NewMaxHealth, bool bClampCurrentHealth)
+{
+	MaxHealth = FMath::Max(1.f, NewMaxHealth);
+
+	if (bClampCurrentHealth)
+	{
+		CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
+	}
 }
 

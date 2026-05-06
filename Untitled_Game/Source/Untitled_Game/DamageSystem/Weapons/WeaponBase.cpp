@@ -2,6 +2,7 @@
 
 
 #include "WeaponBase.h"
+#include "PlayerStats.h"
 
 
 // Sets default values
@@ -48,3 +49,17 @@ void AWeaponBase::SetSWeaponInfo(EWeaponNames WeaponNames, EWeaponTypes WeaponTy
 	CurrentWeaponInfo.WeaponTypes = WeaponTypes;
 }
 
+float AWeaponBase::GetFinalDamageAmount(AActor* WeaponOwner) const
+{
+	float FinalDamage = CurrentDamageAmount;
+
+	if (WeaponOwner)
+	{
+		if (UPlayerStats* Stats = WeaponOwner->FindComponentByClass<UPlayerStats>())
+		{
+			FinalDamage *= Stats->DamageMultiplier;
+		}
+	}
+
+	return FinalDamage;
+}
