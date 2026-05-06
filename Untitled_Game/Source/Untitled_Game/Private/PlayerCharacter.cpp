@@ -28,7 +28,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GrantAbilities(StartingAbilities);
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)
@@ -38,7 +38,6 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		GrantAbilities(StartingAbilities);
 	}
 }
 
