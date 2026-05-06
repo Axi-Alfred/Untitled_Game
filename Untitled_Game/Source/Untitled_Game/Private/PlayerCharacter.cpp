@@ -25,8 +25,6 @@ APlayerCharacter::APlayerCharacter()
 	
 	// Configure character Movement...
 	
-	AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead")
-		).AddUObject(this, &APlayerCharacter::OnDeadTagChanged);
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +32,8 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GrantAbilities(StartingAbilities);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead")
+		).AddUObject(this, &APlayerCharacter::OnDeadTagChanged);
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)

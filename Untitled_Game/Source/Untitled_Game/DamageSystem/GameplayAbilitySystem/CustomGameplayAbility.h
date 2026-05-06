@@ -13,4 +13,7 @@ UCLASS()
 class UNTITLED_GAME_API UCustomGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+	
+public:
+	UCustomGameplayAbility();
 };

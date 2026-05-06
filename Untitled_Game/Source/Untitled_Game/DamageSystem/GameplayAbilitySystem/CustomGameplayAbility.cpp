@@ -2,3 +2,8 @@
 
 
 #include "CustomGameplayAbility.h"
+
+UCustomGameplayAbility::UCustomGameplayAbility()
+{
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Gameplay.Active")));
+}
