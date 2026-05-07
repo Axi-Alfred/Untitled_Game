@@ -24,9 +24,13 @@ void AObjectiveManager::SetObjectiveIndex(int32 Index)
 		return;
 	}
 	
+	int32 PreviousIndex = CurrentIndex;
+	
 	CurrentIndex = Index;
 	
 	UE_LOG(LogTemp, Warning, TEXT("NewObjective: %s"), *Objectives[CurrentIndex]->GetName());
+	
+	OnObjectiveChanged(CurrentIndex, PreviousIndex);
 }
 
 void AObjectiveManager::ObjectiveDestroyed()

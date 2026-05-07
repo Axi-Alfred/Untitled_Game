@@ -1,4 +1,3 @@
-
 #include "EnemyAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -13,9 +12,14 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 		RunBehaviorTree(BehaviorTree);
 	}
 	
-	// Hämta player 
-	// NOTE: (MÅSTE UPPDATERAS OM VI KÖR CO-OP)
-	PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	// Hämta player(s)
+	PlayerOneActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	
+	// Om player 2 existerar 
+	if (UGameplayStatics::GetPlayerPawn(GetWorld(), 1))
+	{
+		PlayerTwoActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 1);
+	}
 	
 	// Hämta manager
 	TArray<AActor*> FoundManagers;
@@ -31,23 +35,53 @@ void AEnemyAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	UpdatePlayers();
 	UpdateTarget();
 }
 
 void AEnemyAIController::UpdateTarget()
 {
-	if (!GetPawn() || !PlayerActor || !ObjectiveManager) return;
+	if (!GetPawn() || !ObjectiveManager) return;
 	
 	AActor* CurrentObjective = ObjectiveManager->GetCurrentObjective();
 	if (!CurrentObjective) return;
 	
-	float DistanceToPlayer = FVector::Dist(
-		GetPawn()->GetActorLocation(),
-		PlayerActor->GetActorLocation());
+	AActor* ClosestPlayer = nullptr;
+	float ClosestDistance = DetectionRadius;
 	
-	AActor* NewTarget = (DistanceToPlayer < DetectionRadius) ? PlayerActor : CurrentObjective;
+	//Check för player 1
+	if (PlayerOneActor)
+	{
+		float Distance = FVector::Dist(
+			GetPawn()->GetActorLocation(),
+			PlayerOneActor->GetActorLocation());
+		
+		if (Distance < ClosestDistance)
+		{
+			ClosestDistance = Distance;
+			ClosestPlayer = PlayerOneActor;
+		}
+	}
 	
-	// uppdaterar blackboard och sätt ny target (player eller objective)
+	//Check för player 2
+	if (PlayerTwoActor)
+	{
+		float Distance = FVector::Dist(
+			GetPawn()->GetActorLocation(),
+			PlayerTwoActor->GetActorLocation());
+		
+		if (Distance < ClosestDistance)
+		{
+			ClosestDistance = Distance;
+			ClosestPlayer = PlayerTwoActor;
+		}
+	}
+	
+	// Om en player hittades inom radius = target player
+	// annars = target objective
+	AActor* NewTarget = ClosestPlayer ? ClosestPlayer : CurrentObjective;
+	
+	// uppdaterar blackboard och sätt ny target
 	if (UBlackboardComponent* BB = GetBlackboardComponent())
 	{
 		AActor* CurrentBBTarget = Cast<AActor>(BB->GetValueAsObject(TargetActorKey));
@@ -57,5 +91,18 @@ void AEnemyAIController::UpdateTarget()
 			BB->SetValueAsObject(TargetActorKey, NewTarget);
 			StopMovement();
 		}
+	}
+}
+
+void AEnemyAIController::UpdatePlayers()
+{
+	if (!PlayerOneActor)
+	{
+		PlayerOneActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	}
+	
+	if (!PlayerTwoActor)
+	{
+		PlayerTwoActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 1);
 	}
 }
