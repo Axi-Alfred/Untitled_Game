@@ -71,9 +71,10 @@ void APlayerCharacter::HandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCharacterMovement()->DisableMovement();
 	
+	/*
 	FVector Impulse = GetActorForwardVector() * -20000;
 	Impulse.Z = 15000;
-	GetMesh()->AddImpulseAtLocation(Impulse, GetActorLocation());
+	GetMesh()->AddImpulseAtLocation(Impulse, GetActorLocation());*/
 }
 
 // Called every frame
