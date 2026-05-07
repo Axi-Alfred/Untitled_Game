@@ -33,4 +33,7 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShowGameOver();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnObjectiveChanged(int32 NewIndex, int32 PreviousIndex);
 };
