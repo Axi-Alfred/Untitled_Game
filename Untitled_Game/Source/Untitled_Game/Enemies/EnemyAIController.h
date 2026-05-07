@@ -27,13 +27,20 @@ protected:
 	
 private:
 	
-	// referens till player
+	// referens till player 1
 	UPROPERTY()
-	AActor* PlayerActor = nullptr;
+	AActor* PlayerOneActor = nullptr;
+	
+	// referens till player 2
+	UPROPERTY()
+	AActor* PlayerTwoActor = nullptr;
 	
 	// Referens till ObjectiveManager
 	UPROPERTY()
 	AObjectiveManager* ObjectiveManager = nullptr;
+	
+	// Hämta om spelare om dem ite existerar
+	void UpdatePlayers();
 	
 	// Updaterar fiendens target (player eller objective)
 	void UpdateTarget();

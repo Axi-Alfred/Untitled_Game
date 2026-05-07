@@ -54,4 +54,4 @@ private:
 		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex
 	);
-};
+};   
