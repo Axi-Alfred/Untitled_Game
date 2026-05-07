@@ -8,6 +8,8 @@
 #include "AbilitySystemInterface.h"
 #include "PlayerCharacter.generated.h"
 
+class AShopActor;
+
 UCLASS()
 class UNTITLED_GAME_API APlayerCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -59,5 +61,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystem")
 	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle> AbilityHandlesToRemove);
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shop")
+	AShopActor* CurrentShop = nullptr;
 };

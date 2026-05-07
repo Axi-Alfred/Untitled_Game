@@ -101,28 +101,20 @@ bool UShop::BuyOffer(int32 OfferIndex, AActor* Player)
 	{
 		return false;
 	}
-
 	UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>();
 	if (!Stats)
 	{
 		return false;
 	}
-
 	const FShopOffer Offer = CurrentOffers[OfferIndex];
-
 	if (!Stats->SpendPoints(Offer.UpgradeData.Cost))
 	{
 		return false;
 	}
-
 	ApplyUpgrade(Offer.UpgradeId, Offer.UpgradeData, Player);
-
 	Stats->AddPurchase(Offer.UpgradeId);
-
 	CurrentOffers.RemoveAt(OfferIndex);
-
 	OnShopOffersChanged.Broadcast();
-
 	return true;
 }
 
@@ -132,20 +124,16 @@ bool UShop::RerollOffers(AActor* Player)
 	{
 		return false;
 	}
-
 	UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>();
 	if (!Stats)
 	{
 		return false;
 	}
-
 	if (!Stats->SpendPoints(RerollCost))
 	{
 		return false;
 	}
-
 	GenerateOffers(Player);
-
 	return true;
 }
 
@@ -263,6 +251,8 @@ void UShop::ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Pl
 				if (Character->GetCharacterMovement())
 				{
 					Character->GetCharacterMovement()->MaxWalkSpeed += Row.Value;
+					
+					
 				}
 			}
 
@@ -278,4 +268,4 @@ void UShop::ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Pl
 	default:
 		break;
 	}
-}
+}   

@@ -24,8 +24,9 @@ public:
 	int32 NumberOfRandomOffers = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
-	int32 RerollCost = 5;
+	int32 RerollCost = 0;
 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop|Always Available")
 	int32 HealthPotionCost = 10;
 
@@ -66,4 +67,4 @@ private:
 	bool IsUpgradeAvailable(FName UpgradeId, const FShopUpgradeRow& Row, UPlayerStats* Stats) const;
 
 	void ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Player);
-};
+};   
