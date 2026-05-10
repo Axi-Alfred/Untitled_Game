@@ -14,6 +14,16 @@ void AWaveManager::BeginPlay()
 		ObjectiveManager = Cast<AObjectiveManager>(FoundObjectiveManagers[0]);
 	}
 	
+	TimeUntilNextWave = TimeBetweenWaves;
+		
+	//Countdown mellan waves
+	GetWorld()->GetTimerManager().SetTimer(
+		CountdownTimerHandle,
+		this,
+		&AWaveManager::UpdateCountdown,
+		1.0f,
+		true);
+	
 	//Wave-Timer innan första waven också så att Sequence hinner köras och spelarna får en liten head-start
 	GetWorld()->GetTimerManager().SetTimer(
 		WaveTimerHandle,
@@ -30,12 +40,6 @@ void AWaveManager::StartWave()
 	OnWaveStarted(CurrentWave);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Wave started! Current wave: %d"), CurrentWave);
-	
-	// Synka det nuvarande objectivet med rätt zon som fiender spawnas i.
-	if (ObjectiveManager)
-	{
-		ObjectiveManager->SetObjectiveIndex(CurrentZone);	
-	}
 	
 	//Öka antal fiender per wave
 	EnemiesPerPortal = BaseEnemiesPerPortal + CurrentWave - 1;
@@ -136,6 +140,15 @@ void AWaveManager::EnemyDied(AActor* DestroyedActor)
 void AWaveManager::UpdateCountdown()
 {
 	TimeUntilNextWave--;
+	
+	if (TimeUntilNextWave == 10.0f)
+	{
+		// Synka det nuvarande objectivet med rätt zon som fiender spawnas i.
+		if (ObjectiveManager)
+		{
+			ObjectiveManager->SetObjectiveIndex(CurrentZone);	
+		}
+	}
 	
 	OnCountdownUpdated(FMath::CeilToInt(TimeUntilNextWave));
 	
