@@ -14,7 +14,13 @@ void AWaveManager::BeginPlay()
 		ObjectiveManager = Cast<AObjectiveManager>(FoundObjectiveManagers[0]);
 	}
 	
-	StartWave();
+	//Wave-Timer innan första waven också så att Sequence hinner köras och spelarna får en liten head-start
+	GetWorld()->GetTimerManager().SetTimer(
+		WaveTimerHandle,
+		this,
+		&AWaveManager::StartWave,
+		TimeBetweenWaves,
+		false);
 }
 
 void AWaveManager::StartWave()
