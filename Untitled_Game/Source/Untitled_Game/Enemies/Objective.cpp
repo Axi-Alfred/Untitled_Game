@@ -3,6 +3,7 @@
 
 #include "Objective.h"
 #include "Untitled_Game/DamageSystem/GameplayAbilitySystem/CustomAbilitySystemComponent.h"
+#include "Untitled_Game/DamageSystem/GameplayAbilitySystem/AttributeSets/BasicAttributeSet.h"
 
 
 // Sets default values
@@ -14,6 +15,8 @@ AObjective::AObjective()
 	AbilitySystemComponent = CreateDefaultSubobject<UCustomAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
+	
+	BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
 }
 
 // Called when the game starts or when spawned
@@ -24,6 +27,10 @@ void AObjective::BeginPlay()
 	AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead")
 		).AddUObject(this, &AObjective::OnDeadTagChanged);
 	
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
 }
 
 void AObjective::OnDeadTagChanged(const FGameplayTag CallBackTag, int32 NewCount)
@@ -52,7 +59,7 @@ UAbilitySystemComponent* AObjective::GetAbilitySystemComponent() const
 TArray<FGameplayAbilitySpecHandle> AObjective::GrantAbilities(TArray<TSubclassOf<UGameplayAbility>> AbilitiesToGrant)
 {
 	
-	if (!AbilitySystemComponent || !HasAuthority())
+	if (!AbilitySystemComponent)
 	{
 		return TArray<FGameplayAbilitySpecHandle>();
 	}
@@ -71,7 +78,7 @@ TArray<FGameplayAbilitySpecHandle> AObjective::GrantAbilities(TArray<TSubclassOf
 
 void AObjective::RemoveAbilities(TArray<FGameplayAbilitySpecHandle> AbilityHandlesToRemove)
 {
-	if (!AbilitySystemComponent || !HasAuthority())
+	if (!AbilitySystemComponent)
 	{
 		return;
 	}
