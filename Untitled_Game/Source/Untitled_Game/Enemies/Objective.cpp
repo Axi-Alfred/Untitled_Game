@@ -2,6 +2,7 @@
 
 
 #include "Objective.h"
+#include "Untitled_Game/DamageSystem/GameplayAbilitySystem/CustomAbilitySystemComponent.h"
 
 
 // Sets default values
@@ -9,13 +10,16 @@ AObjective::AObjective()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UCustomAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
 }
 
 // Called when the game starts or when spawned
 void AObjective::BeginPlay()
 {
 	Super::BeginPlay();
-	GrantAbilities(StartingAbilities);
 	GrantAbilities(StartingAbilities);
 	AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead")
 		).AddUObject(this, &AObjective::OnDeadTagChanged);

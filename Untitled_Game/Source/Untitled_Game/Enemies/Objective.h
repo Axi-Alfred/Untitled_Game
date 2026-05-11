@@ -49,6 +49,6 @@ public:
 	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle> AbilityHandlesToRemove);
 	
 private:
-	EGameplayEffectReplicationMode AscReplicationMode = EGameplayEffectReplicationMode::Mixed;
+	EGameplayEffectReplicationMode AscReplicationMode = EGameplayEffectReplicationMode::Minimal;
 	
 };
