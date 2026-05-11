@@ -34,6 +34,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem")
 	TArray<TSubclassOf<UGameplayAbility>> StartingAbilities;
 	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
