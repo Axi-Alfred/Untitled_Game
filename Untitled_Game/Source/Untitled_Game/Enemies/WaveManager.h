@@ -45,6 +45,13 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float TimeUntilNextWave = 0.f;
 	
+	// Bool som håller koll på om nästa wave ska vara en "empowered-wave"
+	UPROPERTY(BlueprintReadOnly)
+	bool ShouldEmpowerNextWave = false;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool isCurrentWaveEmpowered = false;
+	
 	// Hur många fiender ska portaler spawna
 	UPROPERTY(BlueprintReadOnly)
 	int32 EnemiesPerPortal;
@@ -56,6 +63,9 @@ public:
 	//Väntetid mellan waves
 	UPROPERTY(EditAnywhere, Category="Wave")
 	float TimeBetweenWaves = 30.f;
+	
+	UFUNCTION(BlueprintCallable)
+	void EmpowerNextWave();
 	
 	UFUNCTION(BlueprintCallable)
 	void AddAliveEnemy(AActor* Enemy);

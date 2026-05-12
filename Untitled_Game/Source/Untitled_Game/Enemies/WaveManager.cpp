@@ -35,6 +35,8 @@ void AWaveManager::BeginPlay()
 
 void AWaveManager::StartWave()
 {
+	isCurrentWaveEmpowered = ShouldEmpowerNextWave;
+	
 	EnemiesAlive = 0;
 	
 	OnWaveStarted(CurrentWave);
@@ -45,6 +47,10 @@ void AWaveManager::StartWave()
 	EnemiesPerPortal = BaseEnemiesPerPortal + CurrentWave - 1;
 	
 	SpawnPortals();
+	
+	// Sätter tillbaka bool så att inte alla waves blir empowered
+	ShouldEmpowerNextWave = false;
+	isCurrentWaveEmpowered = false;
 }
 
 void AWaveManager::SpawnPortals()
@@ -64,7 +70,17 @@ void AWaveManager::SpawnPortals()
 	//kopierar spawnpoints för att inte kunna återanvända dem som redan används
 	TArray<AActor*> AvailableSpawnPoints = *CurrentZonePoints;
 	
-	for (int32 i = 0; i < PortalsPerWave; i++)
+	int32 PortalAmount = PortalsPerWave;
+	
+	if (ShouldEmpowerNextWave)
+	{
+		// Om nästa wave ska vara "flooded" så aktiverar vi alla möjliga portaler.
+		PortalAmount = AvailableSpawnPoints.Num();
+		
+		UE_LOG(LogTemp, Warning, TEXT("EMPOWERED WAVE INCOMING!!!!"))
+	}
+	
+	for (int32 i = 0; i < PortalAmount; i++)
 	{
 		if (AvailableSpawnPoints.Num() <= 0) break;
 		
@@ -156,4 +172,11 @@ void AWaveManager::UpdateCountdown()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(CountdownTimerHandle);
 	}
+}
+
+void AWaveManager::EmpowerNextWave()
+{
+	ShouldEmpowerNextWave = true;
+	
+	UE_LOG(LogTemp, Warning, TEXT("next wave will be flooded!"))
 }
