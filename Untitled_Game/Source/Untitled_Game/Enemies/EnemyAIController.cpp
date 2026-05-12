@@ -76,7 +76,7 @@ void AEnemyAIController::UpdateTarget()
 			ClosestPlayer = PlayerTwoActor;
 		}
 	}
-	
+	//test
 	// Om en player hittades inom radius = target player
 	// annars = target objective
 	AActor* NewTarget = ClosestPlayer ? ClosestPlayer : CurrentObjective;
