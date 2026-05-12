@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "ShopUpgrades.h"
 #include "PlayerStats.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPointsChanged, int32, NewPoints);
@@ -29,6 +30,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats|Movement")
 	float MoveSpeedBonus = 0.f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats|Shop")
+	TArray<FShopOffer> CurrentShopOffers;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats|Upgrades")
+	TMap<FName, int32> PurchaseCounts;
+
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
 	FOnPointsChanged OnPointsChanged;
 
@@ -49,7 +56,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Stats|Upgrades")
 	void AddPurchase(FName UpgradeId);
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats|Upgrades")
-	TMap<FName, int32> PurchaseCounts;
 };

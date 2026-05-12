@@ -9,15 +9,23 @@ UShop::UShop()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-TArray<FShopOffer> UShop::GetCurrentOffers() const
+TArray<FShopOffer> UShop::GetCurrentOffers(AActor* Player) const
 {
-	return CurrentOffers;
+	if (!Player)
+	{
+		return TArray<FShopOffer>();
+	}
+
+	if (UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>())
+	{
+		return Stats->CurrentShopOffers;
+	}
+
+	return TArray<FShopOffer>();
 }
 
 void UShop::GenerateOffers(AActor* Player)
 {
-	CurrentOffers.Empty();
-
 	if (!UpgradeTable || !Player)
 	{
 		OnShopOffersChanged.Broadcast();
@@ -30,6 +38,8 @@ void UShop::GenerateOffers(AActor* Player)
 		OnShopOffersChanged.Broadcast();
 		return;
 	}
+
+	Stats->CurrentShopOffers.Empty();
 
 	TArray<FName> RowNames = UpgradeTable->GetRowNames();
 	TArray<FName> AvailableIds;
@@ -61,7 +71,7 @@ void UShop::GenerateOffers(AActor* Player)
 			FShopOffer Offer;
 			Offer.UpgradeId = ChosenId;
 			Offer.UpgradeData = *ChosenRow;
-			CurrentOffers.Add(Offer);
+			Stats->CurrentShopOffers.Add(Offer);
 		}
 
 		AvailableIds.RemoveAt(RandomIndex);
@@ -97,24 +107,32 @@ bool UShop::IsUpgradeAvailable(FName UpgradeId, const FShopUpgradeRow& Row, UPla
 
 bool UShop::BuyOffer(int32 OfferIndex, AActor* Player)
 {
-	if (!Player || !CurrentOffers.IsValidIndex(OfferIndex))
+	if (!Player)
 	{
 		return false;
 	}
+
 	UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>();
-	if (!Stats)
+	if (!Stats || !Stats->CurrentShopOffers.IsValidIndex(OfferIndex))
 	{
 		return false;
 	}
-	const FShopOffer Offer = CurrentOffers[OfferIndex];
+
+	const FShopOffer Offer = Stats->CurrentShopOffers[OfferIndex];
+
 	if (!Stats->SpendPoints(Offer.UpgradeData.Cost))
 	{
 		return false;
 	}
+
 	ApplyUpgrade(Offer.UpgradeId, Offer.UpgradeData, Player);
+
 	Stats->AddPurchase(Offer.UpgradeId);
-	CurrentOffers.RemoveAt(OfferIndex);
+
+	Stats->CurrentShopOffers.RemoveAt(OfferIndex);
+
 	OnShopOffersChanged.Broadcast();
+
 	return true;
 }
 
@@ -124,16 +142,20 @@ bool UShop::RerollOffers(AActor* Player)
 	{
 		return false;
 	}
+
 	UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>();
 	if (!Stats)
 	{
 		return false;
 	}
+
 	if (!Stats->SpendPoints(RerollCost))
 	{
 		return false;
 	}
+
 	GenerateOffers(Player);
+
 	return true;
 }
 
@@ -180,10 +202,6 @@ bool UShop::BuyDefenseHeal(AActor* Player)
 	{
 		return false;
 	}
-
-	// Placeholder for later:
-	// Find your defense objective and heal its DamageSystemComponent.
-	// For now this only spends points successfully.
 
 	return true;
 }
@@ -251,8 +269,6 @@ void UShop::ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Pl
 				if (Character->GetCharacterMovement())
 				{
 					Character->GetCharacterMovement()->MaxWalkSpeed += Row.Value;
-					
-					
 				}
 			}
 
@@ -261,11 +277,10 @@ void UShop::ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Pl
 
 	case EShopUpgradeType::UnlockWeapon:
 		{
-			// Placeholder for later weapon unlock logic.
 			break;
 		}
 
 	default:
 		break;
 	}
-}   
+}  
