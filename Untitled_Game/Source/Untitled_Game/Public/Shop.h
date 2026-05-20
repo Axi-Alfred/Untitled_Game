@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ShopUpgrades.h"
+#include "GameplayTagContainer.h"
 #include "Shop.generated.h"
 
 class UPlayerStats;

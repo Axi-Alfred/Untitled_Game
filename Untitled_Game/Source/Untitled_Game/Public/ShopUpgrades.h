@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
+#include "GameplayTagContainer.h"
 #include "ShopUpgrades.generated.h"
-
+/*
 UENUM(BlueprintType)
 enum class EShopUpgradeType : uint8
 {
@@ -14,7 +15,7 @@ enum class EShopUpgradeType : uint8
 	MoveSpeed UMETA(DisplayName = "Move Speed"),
 	UnlockWeapon UMETA(DisplayName = "Unlock Weapon")
 };
-
+*/
 USTRUCT(BlueprintType)
 struct UNTITLED_GAME_API FShopUpgradeRow : public FTableRowBase
 {
@@ -27,7 +28,7 @@ struct UNTITLED_GAME_API FShopUpgradeRow : public FTableRowBase
 	FText Description;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
-	EShopUpgradeType UpgradeType = EShopUpgradeType::MaxHealth;
+	FGameplayTag UpgradeTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
 	float Value = 0.f;
@@ -36,7 +37,7 @@ struct UNTITLED_GAME_API FShopUpgradeRow : public FTableRowBase
 	int32 Cost = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
-	int32 MaxPurchaseCount = 5;
+	int32 MaxPurchaseCount = 5 ;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
 	bool bCanAppearInRandomShop = true;
