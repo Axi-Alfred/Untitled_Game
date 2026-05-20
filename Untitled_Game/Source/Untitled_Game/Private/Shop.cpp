@@ -1,8 +1,7 @@
 #include "Shop.h"
 #include "PlayerStats.h"
 #include "Untitled_Game/DamageSystem/DamageSystemComponent.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "ShopUpgradeInterface.h"
 
 UShop::UShop()
 {
@@ -213,74 +212,9 @@ void UShop::ApplyUpgrade(FName UpgradeId, const FShopUpgradeRow& Row, AActor* Pl
 		return;
 	}
 
-	UPlayerStats* Stats = Player->FindComponentByClass<UPlayerStats>();
-
-	switch (Row.UpgradeType)
+	if (Player->GetClass()->ImplementsInterface(UShopUpgradeInterface::StaticClass()))
 	{
-	case EShopUpgradeType::MaxHealth:
-		{
-			if (UDamageSystemComponent* Damage = Player->FindComponentByClass<UDamageSystemComponent>())
-			{
-				Damage->AddMaxHealth(Row.Value, true);
-			}
-
-			break;
-		}
-
-	case EShopUpgradeType::WeaponDamage:
-		{
-			if (Stats)
-			{
-				Stats->DamageMultiplier += Row.Value;
-			}
-
-			break;
-		}
-
-	case EShopUpgradeType::AttackSpeed:
-		{
-			if (Stats)
-			{
-				Stats->AttackSpeedMultiplier += Row.Value;
-			}
-
-			break;
-		}
-
-	case EShopUpgradeType::WeaponRange:
-		{
-			if (Stats)
-			{
-				Stats->RangeMultiplier += Row.Value;
-			}
-
-			break;
-		}
-
-	case EShopUpgradeType::MoveSpeed:
-		{
-			if (Stats)
-			{
-				Stats->MoveSpeedBonus += Row.Value;
-			}
-
-			if (ACharacter* Character = Cast<ACharacter>(Player))
-			{
-				if (Character->GetCharacterMovement())
-				{
-					Character->GetCharacterMovement()->MaxWalkSpeed += Row.Value;
-				}
-			}
-
-			break;
-		}
-
-	case EShopUpgradeType::UnlockWeapon:
-		{
-			break;
-		}
-
-	default:
-		break;
+		IShopUpgradeInterface::Execute_ApplyShopUpgrade(
+			Player, UpgradeId, Row.UpgradeTag, Row.Value);
 	}
 }  
