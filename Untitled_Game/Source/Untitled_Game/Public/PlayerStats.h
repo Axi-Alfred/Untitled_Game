@@ -56,4 +56,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Stats|Upgrades")
 	void AddPurchase(FName UpgradeId);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats|Combat")
+	float WeaponDamageBonus = 0.f;
 };
