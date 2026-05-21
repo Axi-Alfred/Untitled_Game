@@ -114,6 +114,7 @@ void AWaveManager::AddAliveEnemy(AActor* Enemy)
 void AWaveManager::EnemyDied(AActor* DestroyedActor)
 {
 	EnemiesAlive--;
+	TotalEnemiesKilled++;
 	
 	UE_LOG(LogTemp, Warning, TEXT("Enemy died, Enemies left: %d"), EnemiesAlive);
 	

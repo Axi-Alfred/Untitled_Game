@@ -45,6 +45,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float TimeUntilNextWave = 0.f;
 	
+	//Variabel för att tracka hur många fiender som har dödats
+	UPROPERTY(BlueprintReadOnly)
+	int32 TotalEnemiesKilled = 0;
+	
 	// Bool som håller koll på om nästa wave ska vara en "empowered-wave"
 	UPROPERTY(BlueprintReadOnly)
 	bool ShouldEmpowerNextWave = false;
