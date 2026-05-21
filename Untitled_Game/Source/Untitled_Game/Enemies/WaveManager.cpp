@@ -50,7 +50,6 @@ void AWaveManager::StartWave()
 	
 	// Sätter tillbaka bool så att inte alla waves blir empowered
 	ShouldEmpowerNextWave = false;
-	isCurrentWaveEmpowered = false;
 }
 
 void AWaveManager::SpawnPortals()
@@ -72,7 +71,7 @@ void AWaveManager::SpawnPortals()
 	
 	int32 PortalAmount = PortalsPerWave;
 	
-	if (ShouldEmpowerNextWave)
+	if (isCurrentWaveEmpowered)
 	{
 		// Om nästa wave ska vara "flooded" så aktiverar vi alla möjliga portaler.
 		PortalAmount = AvailableSpawnPoints.Num();
@@ -125,6 +124,7 @@ void AWaveManager::EnemyDied(AActor* DestroyedActor)
 		OnWaveEnded();
 		ShowEnemiesCleared();
 		
+		isCurrentWaveEmpowered = false;
 		CurrentWave++;
 		
 		//Loopar nuvarande zon mellan de 4 som existerar för nu
