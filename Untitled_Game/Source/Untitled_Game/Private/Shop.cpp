@@ -100,6 +100,14 @@ bool UShop::IsUpgradeAvailable(FName UpgradeId, const FShopUpgradeRow& Row, UPla
 	{
 		return false;
 	}
+	
+	if (Row.RequiredClassTag.IsValid())
+	{
+		if (!Stats->PlayerClassTag.MatchesTagExact(Row.RequiredClassTag))
+		{
+			return false;
+		}
+	}
 
 	return true;
 }
