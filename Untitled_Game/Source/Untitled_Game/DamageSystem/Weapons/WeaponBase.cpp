@@ -2,7 +2,7 @@
 
 
 #include "WeaponBase.h"
-#include "PlayerStats.h"
+#include "Untitled_Game/DamageSystem/GameplayAbilitySystem/AttributeSets/WeaponAttributeSet.h"
 
 
 // Sets default values
@@ -10,6 +10,8 @@ AWeaponBase::AWeaponBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	WeaponAttributeSet = CreateDefaultSubobject<UWeaponAttributeSet>(TEXT("WeaponAttributeSet"));
 }
 
 // Called when the game starts or when spawned

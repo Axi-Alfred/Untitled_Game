@@ -17,7 +17,9 @@ class UNTITLED_GAME_API AWeaponBase : public AActor
 public:
 	// Sets default values for this actor's properties
 	AWeaponBase();
-private:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	class UWeaponAttributeSet* WeaponAttributeSet;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
