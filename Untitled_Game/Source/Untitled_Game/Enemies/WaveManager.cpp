@@ -73,7 +73,7 @@ void AWaveManager::SpawnPortals()
 	
 	if (isCurrentWaveEmpowered)
 	{
-		// Om nästa wave ska vara "flooded" så aktiverar vi alla möjliga portaler.
+		// Om nuvarande wave ska vara "empowered" så aktiverar vi alla möjliga portaler.
 		PortalAmount = AvailableSpawnPoints.Num();
 		
 		UE_LOG(LogTemp, Warning, TEXT("EMPOWERED WAVE INCOMING!!!!"))
@@ -91,7 +91,7 @@ void AWaveManager::SpawnPortals()
 		
 		if (SpawnPoint && PortalClass)
 		{
-			AActor* Portal = GetWorld()->SpawnActor<AActor>(
+			GetWorld()->SpawnActor<AActor>(
 				PortalClass,
 				SpawnPoint->GetActorLocation(),
 				FRotator::ZeroRotator);
@@ -122,7 +122,6 @@ void AWaveManager::EnemyDied(AActor* DestroyedActor)
 		UE_LOG(LogTemp, Warning, TEXT("Wave cleared!"));
 		
 		OnWaveEnded();
-		ShowEnemiesCleared();
 		
 		isCurrentWaveEmpowered = false;
 		CurrentWave++;
