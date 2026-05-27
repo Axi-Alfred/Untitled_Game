@@ -77,10 +77,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EnemyDied(AActor* DestroyedActor);
 	
-	// Event för UI feedback (PLACEHOLDER JUST NU)
-	UFUNCTION(BlueprintImplementableEvent)
-	void ShowEnemiesCleared();
-	
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnWaveStarted(int32 WaveNumber);
 	
