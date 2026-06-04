@@ -47,9 +47,6 @@ struct UNTITLED_GAME_API FShopUpgradeRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
 	TSoftObjectPtr<UTexture2D> Icon;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
-	FGameplayTag RequiredClassTag;
 };
 
 USTRUCT(BlueprintType)

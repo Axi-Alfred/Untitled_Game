@@ -59,7 +59,4 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats|Combat")
 	float WeaponDamageBonus = 0.f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats|Class")
-	FGameplayTag PlayerClassTag;
 };

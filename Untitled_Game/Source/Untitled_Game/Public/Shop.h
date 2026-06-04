@@ -22,7 +22,7 @@ public:
 	UDataTable* UpgradeTable = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
-	int32 NumberOfRandomOffers = 3;
+	int32 NumberOfRandomOffers = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shop")
 	int32 RerollCost = 0;
